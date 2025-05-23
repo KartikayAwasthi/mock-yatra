@@ -19,18 +19,20 @@ const Navbar = () => {
             <a href="/" className="hover:text-cyan-300 transition duration-300">
               Home
             </a>
-            <a
-              href="/test-series"
-              className="hover:text-cyan-300 transition duration-300"
+            <button
+              className="hover:text-cyan-300 transition duration-300 bg-transparent border-none outline-none"
+              style={{ background: "none" }}
+              onClick={() => navigate("/test-series")}
             >
               Test Series
-            </a>
-            <a
-              href="/about"
-              className="hover:text-cyan-300 transition duration-300"
+            </button>
+            <button
+              className="hover:text-cyan-300 transition duration-300 bg-transparent border-none outline-none"
+              style={{ background: "none" }}
+              onClick={() => navigate("/about")}
             >
               About
-            </a>
+            </button>
           </div>
 
           {/* Auth & Get Pro Buttons - Desktop */}
@@ -106,17 +108,24 @@ const Navbar = () => {
             >
               Home
             </a>
-            <a
-              href="/test-series"
-              className="block px-3 py-2 rounded-md text-base font-semibold hover:bg-cyan-500 transition"
-              onClick={() => setIsOpen(false)}
+            <button
+              className="block w-full text-left px-3 py-2 rounded-md bg-transparent hover:bg-cyan-500 text-white font-semibold"
+              style={{ background: "none" }}
+              onClick={() => {
+                setIsOpen(false);
+                navigate("/test-series");
+              }}
             >
               Test Series
-            </a>
+            </button>
             <a
               href="/about"
               className="block px-3 py-2 rounded-md text-base font-semibold hover:bg-cyan-500 transition"
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen(false);
+                navigate("/about");
+              }}
             >
               About
             </a>

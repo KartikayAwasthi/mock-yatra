@@ -1,0 +1,22 @@
+[
+  {
+    "id": "q1",
+    "question": "Which of the following are Fundamental Rights in India?",
+    "options": [
+      "Right to Equality",
+      "Right to Property",
+      "Right to Education",
+      "Right to Work"
+    ]
+  },
+  {
+    "id": "q2",
+    "question": "Which planet is known as the Red Planet?",
+    "options": [
+      "Earth",
+      "Mars",
+      "Jupiter",
+      "Venus"
+    ]
+  }
+]

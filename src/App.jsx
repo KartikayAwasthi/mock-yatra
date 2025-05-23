@@ -6,6 +6,9 @@ import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
 import GetPro from "./components/GetPro";
 import ExamDetail from "./components/ExamDetail";
+import AboutPage from "./components/AboutPage";
+import TestSeriesPage from "./components/TestSeriesPage";
+import TestInstructionsPage from "./components/TestInstructionsPage";
 
 function App() {
   return (
@@ -17,6 +20,12 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/get-pro" element={<GetPro />} />
         <Route path="/exam/:examId" element={<ExamDetail />} />
+        <Route path="/test-series" element={<TestSeriesPage />} />
+        <Route
+          path="/test-instructions/:testId"
+          element={<TestInstructionsPage />}
+        />
+        <Route path="/about" element={<AboutPage />} />
         {/* Add more routes as needed */}
       </Routes>
     </div>

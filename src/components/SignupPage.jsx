@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-//import SignupIllustration from "../assets/signup-illustration.svg"; // Use any unDraw or custom SVG here
+import axios from "axios";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -12,9 +12,11 @@ const SignupPage = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [apiMessage, setApiMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+    setApiMessage("");
   };
 
   const validate = () => {
@@ -33,11 +35,36 @@ const SignupPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      // Submit logic here
-      console.log("Form submitted:", formData);
+    if (!validate()) return;
+
+    const payload = {
+      name: formData.fullName,
+      email: formData.email,
+      mobile: formData.mobile,
+      password: formData.password,
+    };
+    // Log payload to console before sending
+    console.log("📤 Sending signup data to backend:", payload);
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/auth/signup",
+        payload
+      );
+      setApiMessage(res.data.message || "Signup successful!");
+      setFormData({
+        fullName: "",
+        email: "",
+        mobile: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Signup failed. Please try again.";
+      setApiMessage(message);
     }
   };
 
@@ -49,102 +76,43 @@ const SignupPage = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label
-              htmlFor="fullName"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-orange-400 focus:outline-none"
-            />
-            {errors.fullName && (
-              <p className="text-red-600 text-xs mt-1">{errors.fullName}</p>
-            )}
-          </div>
+          {["fullName", "email", "mobile", "password", "confirmPassword"].map(
+            (field) => (
+              <div key={field}>
+                <label
+                  htmlFor={field}
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  {field === "confirmPassword"
+                    ? "Confirm Password"
+                    : field.charAt(0).toUpperCase() +
+                      field.slice(1).replace(/([A-Z])/g, " $1")}
+                </label>
+                <input
+                  type={field.includes("password") ? "password" : "text"}
+                  id={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  className="w-full mt-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-orange-400 focus:outline-none"
+                />
+                {errors[field] && (
+                  <p className="text-red-600 text-xs mt-1">{errors[field]}</p>
+                )}
+              </div>
+            )
+          )}
 
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          {apiMessage && (
+            <p
+              className={`text-sm text-center ${
+                apiMessage.includes("success")
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
             >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-orange-400 focus:outline-none"
-            />
-            {errors.email && (
-              <p className="text-red-600 text-xs mt-1">{errors.email}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="mobile"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Mobile Number
-            </label>
-            <input
-              type="text"
-              id="mobile"
-              value={formData.mobile}
-              onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-orange-400 focus:outline-none"
-            />
-            {errors.mobile && (
-              <p className="text-red-600 text-xs mt-1">{errors.mobile}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-orange-400 focus:outline-none"
-            />
-            {errors.password && (
-              <p className="text-red-600 text-xs mt-1">{errors.password}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-orange-400 focus:outline-none"
-            />
-            {errors.confirmPassword && (
-              <p className="text-red-600 text-xs mt-1">
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
+              {apiMessage}
+            </p>
+          )}
 
           <button
             type="submit"

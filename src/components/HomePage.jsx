@@ -5,22 +5,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import { EffectFade, Autoplay, Navigation } from "swiper/modules";
-
-const exams = [
-  { name: "UPSC Civil Services", icon: "🧑‍⚖️" },
-  { name: "SSC Exams", icon: "📋" },
-  { name: "Banking & Insurance", icon: "🏦" },
-  { name: "Railway Recruitment", icon: "🚂" },
-  { name: "Defense & Police", icon: "🪖" },
-  { name: "State PSCs", icon: "🏛️" },
-];
-
-const popularTests = [
-  { title: "UPSC Prelims 2025 Mock Test", exam: "UPSC" },
-  { title: "SSC CGL Tier 1 Practice", exam: "SSC" },
-  { title: "IBPS PO Mock Test", exam: "Banking" },
-  { title: "RRB NTPC Sample Test", exam: "Railway" },
-];
+import { EXAMS, POPULAR_TESTS, HERO_IMAGE } from "../constants";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -50,7 +35,7 @@ const HomePage = () => {
         <div className="hidden md:block md:w-1/2">
           {/* Placeholder for hero image or illustration */}
           <img
-            src="https://cdn-icons-png.flaticon.com/512/3595/3595452.png"
+            src={HERO_IMAGE}
             alt="Mock Test Illustration"
             className="w-full max-w-md mx-auto"
           />
@@ -63,7 +48,7 @@ const HomePage = () => {
           Popular Exam Categories
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-          {exams.map(({ name, icon }) => (
+          {EXAMS.map(({ name, icon }) => (
             <div
               key={name}
               className="bg-white rounded-xl shadow-md p-5 flex flex-col items-center justify-center cursor-pointer hover:shadow-xl transition"
@@ -116,7 +101,7 @@ const HomePage = () => {
           Popular Mock Tests
         </h2>
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {popularTests.map(({ title, exam }) => (
+          {POPULAR_TESTS.map(({ title, exam }) => (
             <div
               key={title}
               className="bg-white rounded-xl shadow-md p-5 cursor-pointer hover:shadow-xl transition"
